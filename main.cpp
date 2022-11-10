@@ -9,7 +9,9 @@ const int COL = 50;
 int fib(int n);
 int sum(int n);
 int findLargest(const int arry[], int size, int largest);
-int FindEagle(int ar[ROW][COL], int r, int c, int r_count, int c_count , int e_size);
+int FindEagle(int ar[ROW][COL], int r, int c, int r_count, int c_count,
+              int size, int eagleCount);
+int FindEagleSize();
 
 int main() {
 
@@ -27,7 +29,7 @@ int main() {
   cout << endl << endl;
 
   ifstream myIn;
-  int arry[ROW][COL], row, col, num, eagles = 0;
+  int arry[ROW][COL], row, col, num;
 
   myIn.open("eagle.dat");
   assert(myIn);
@@ -47,13 +49,10 @@ int main() {
       }
       cout << endl;
     }
-    for (int i = 0; i < row; i++) {
-      for (int j = 0; j < col; j++) {
-        if (arry[i][j] > 0) {
-          FindEagle(arry, row, col, i, j,0);
-        }
-      }
-    }
+    cout << endl;
+
+    cout << FindEagle(arry, row, col, 0, 0, 0, 0) << endl;
+    cout << endl;
   }
 
   myIn.close();
@@ -90,10 +89,33 @@ int findLargest(const int arry[], int size, int largest) {
   }
 }
 
-int FindEagle(int ar[ROW][COL], int r, int c, int r_count, int c_count , int e_size) {
-  
-  ar[r_count][c_count]=0;
-
-  if(ar[r_count][c_count] == 0 && )
-  
+int FindEagle(int ar[ROW][COL], int r, int c, int r_count, int c_count,
+              int size, int eagleCount) {
+  if (r_count > r && c_count > c) {
+    return eagleCount;
+  }
+  if (ar[r_count][c_count] > 0) {
+    ar[r_count][c_count] = 0;
+    size++;
+    if (ar[r_count][c_count - 1] > 0 && r_count > 0 && c_count - 1 > 0) {
+      ar[r_count][c_count] = 0;
+      return FindEagle(ar, r , c, )
+    }
+    if (ar[r_count -1 ][c_count -1] > 0 && r_count -1 > 0 && c_count -1 > 0 &&
+        r_count < r && c_count < c) {
+      size++;
+      c_count--;
+      ar[r_count][c_count] = 0;
+    }
+    if (ar[r_count -1 ][c_count] > 0 && r_count > 0 && c_count > 0 &&
+        r_count < r && c_count < c) {
+      size++;
+      c_count--;
+      ar[r_count][c_count] = 0;
+    }
+  }
+  if (ar[r_count][c_count] == 0 && c_count == c) {
+    return FindEagle(ar, r, c, r_count++, 0, size, eagleCount);
+  } else
+    return FindEagle(ar, r, c, r_count, c_count++, size, eagleCount);
 }
